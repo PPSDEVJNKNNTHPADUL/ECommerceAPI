@@ -5,7 +5,6 @@ using ECommerce.Application.Validation;
 using ECommerce.Domain.Interface;
 using ECommerce.Infrastructure.Data;
 using ECommerce.Infrastructure.Repository;
-using ECommerceAPI.Mapper;
 using FluentValidation;
 using MediatR;
 
@@ -22,32 +21,32 @@ namespace ECommerceAPI.Autofac
                 .As(typeof(IPipelineBehavior<,>))
                 .InstancePerDependency();
 
-            builder.RegisterType<UserValidation>()
-                .As<IValidator<AddUserCommand>>()
+            builder.RegisterType<UserValidator.UserValidation>()
+                .As<IValidator<UserCommand.AddUserCommand>>()
                 .InstancePerDependency();
 
-            builder.RegisterType<AddCartItemCommandValidation>()
-                .As<IValidator<AddCartItemCommand>>()
+            builder.RegisterType<CartItemValidator.AddCartItemCommandValidation>()
+                .As<IValidator<CartItemCommand.AddCartItemCommand>>()
                 .InstancePerDependency();
 
-            builder.RegisterType<UpdateCartItemCommandValidation>()
-                .As<IValidator<UpdateCartItemCommand>>()
+            builder.RegisterType<CartItemValidator.UpdateCartItemCommandValidation>()
+                .As<IValidator<CartItemCommand.UpdateCartItemCommand>>()
                 .InstancePerDependency();
 
-            builder.RegisterType<DeleteCartItemCommandValidation>()
-                .As<IValidator<DeleteCartItemCommand>>()
+            builder.RegisterType<CartItemValidator.DeleteCartItemCommandValidation>()
+                .As<IValidator<CartItemCommand.DeleteCartItemCommand>>()
                 .InstancePerDependency();
 
-            builder.RegisterType<UpdateOrderCommandValidation>()
-                .As<IValidator<UpdateOrderCommand>>()
+            builder.RegisterType<OrderValidator.UpdateOrderCommandValidation>()
+                .As<IValidator<OrderCommand.UpdateOrderCommand>>()
                 .InstancePerDependency();
 
-            builder.RegisterType<DeleteOrderCommandValidation>()
-                .As<IValidator<DeleteOrderCommand>>()
+            builder.RegisterType<OrderValidator.DeleteOrderCommandValidation>()
+                .As<IValidator<OrderCommand.DeleteOrderCommand>>()
                 .InstancePerDependency();
 
             builder.RegisterType<CheckoutValidation>()
-                .As<IValidator<CheckoutOrderCommand>>()
+                .As<IValidator<CheckoutCommand.CheckoutOrderCommand>>()
                 .InstancePerDependency();
 
             builder.RegisterType<OrderRepository>()
@@ -70,17 +69,38 @@ namespace ECommerceAPI.Autofac
                 .As<IMediator>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterAssemblyTypes(typeof(AddUserCommandHandler).Assembly).AsClosedTypesOf(typeof(IRequestHandler<,>));
-            builder.RegisterAssemblyTypes(typeof(AddCartItemCommandHandler).Assembly).AsClosedTypesOf(typeof(IRequestHandler<,>));
-            builder.RegisterAssemblyTypes(typeof(CheckoutOrderCommandHandler).Assembly).AsClosedTypesOf(typeof(IRequestHandler<,>));
-            builder.RegisterAssemblyTypes(typeof(DeleteCartItemCommandHandler).Assembly).AsClosedTypesOf(typeof(IRequestHandler<,>));
-            builder.RegisterAssemblyTypes(typeof(DeleteOrderCommandHandler).Assembly).AsClosedTypesOf(typeof(IRequestHandler<,>));
-            builder.RegisterAssemblyTypes(typeof(GetAllCartItemQueryHandler).Assembly).AsClosedTypesOf(typeof(IRequestHandler<,>));
-            builder.RegisterAssemblyTypes(typeof(GetOrderByIdQueryHandler).Assembly).AsClosedTypesOf(typeof(IRequestHandler<,>));
-            builder.RegisterAssemblyTypes(typeof(GetOrdersQueryHandler).Assembly).AsClosedTypesOf(typeof(IRequestHandler<,>));
-            builder.RegisterAssemblyTypes(typeof(GetUserByIdQueryHandler).Assembly).AsClosedTypesOf(typeof(IRequestHandler<,>));
-            builder.RegisterAssemblyTypes(typeof(UpdateCartItemCommandHandler).Assembly).AsClosedTypesOf(typeof(IRequestHandler<,>));
-            builder.RegisterAssemblyTypes(typeof(UpdateOrderCommandHandler).Assembly).AsClosedTypesOf(typeof(IRequestHandler<,>));
+            builder.RegisterAssemblyTypes(typeof(UserHandler.AddUserCommandHandler).Assembly)
+                .AsClosedTypesOf(typeof(IRequestHandler<,>));
+
+            builder.RegisterAssemblyTypes(typeof(CartItemHandler.AddCartItemCommandHandler).Assembly)
+                .AsClosedTypesOf(typeof(IRequestHandler<,>));
+
+            builder.RegisterAssemblyTypes(typeof(CheckoutHandler.CheckoutOrderCommandHandler).Assembly)
+                .AsClosedTypesOf(typeof(IRequestHandler<,>));
+
+            builder.RegisterAssemblyTypes(typeof(CartItemHandler.DeleteCartItemCommandHandler).Assembly)
+                .AsClosedTypesOf(typeof(IRequestHandler<,>));
+
+            builder.RegisterAssemblyTypes(typeof(OrderHandler.DeleteOrderCommandHandler).Assembly)
+                .AsClosedTypesOf(typeof(IRequestHandler<,>));
+
+            builder.RegisterAssemblyTypes(typeof(CartItemHandler.GetAllCartItemQueryHandler).Assembly)
+                .AsClosedTypesOf(typeof(IRequestHandler<,>));
+
+            builder.RegisterAssemblyTypes(typeof(OrderHandler.GetOrderByIdQueryHandler).Assembly)
+                .AsClosedTypesOf(typeof(IRequestHandler<,>));
+
+            builder.RegisterAssemblyTypes(typeof(OrderHandler.GetOrdersQueryHandler).Assembly)
+                .AsClosedTypesOf(typeof(IRequestHandler<,>));
+
+            builder.RegisterAssemblyTypes(typeof(UserHandler.GetUserByIdQueryHandler).Assembly)
+                .AsClosedTypesOf(typeof(IRequestHandler<,>));
+
+            builder.RegisterAssemblyTypes(typeof(CartItemHandler.UpdateCartItemCommandHandler).Assembly)
+                .AsClosedTypesOf(typeof(IRequestHandler<,>));
+
+            builder.RegisterAssemblyTypes(typeof(OrderHandler.UpdateOrderCommandHandler).Assembly)
+                .AsClosedTypesOf(typeof(IRequestHandler<,>));
 
 
 

@@ -21,7 +21,7 @@ namespace ECommerceAPI.Controllers.V2
         [HttpPost]
         public async Task<IActionResult> AddUser([FromBody] AddUserDTO addUserDTO)
         {
-            var command = new AddUserCommand
+            var command = new UserCommand.AddUserCommand
             {
                 UserName = addUserDTO.UserName
             };
@@ -32,7 +32,7 @@ namespace ECommerceAPI.Controllers.V2
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetUserById(Guid userId)
         {
-            var query = new GetUserByIdQuery
+            var query = new UserQuery.GetUserByIdQuery
             {
                 UserId = userId
             };

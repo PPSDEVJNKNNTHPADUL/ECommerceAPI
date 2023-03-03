@@ -20,7 +20,7 @@ namespace ECommerceAPI.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> CheckoutOrder(CheckoutModel checkout)
         {
-            var command = new CheckoutOrderCommand { Checkout = checkout };
+            var command = new CheckoutCommand.CheckoutOrderCommand { Checkout = checkout };
             await _mediator.Send(command);
             return Ok();
         }

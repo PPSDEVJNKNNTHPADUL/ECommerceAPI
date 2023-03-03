@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace ECommerce.Application.Validation
 {
-    public class CheckoutValidation : AbstractValidator<CheckoutOrderCommand>
+    public class CheckoutValidation : AbstractValidator<CheckoutCommand.CheckoutOrderCommand>
     {
         public CheckoutValidation()
         {

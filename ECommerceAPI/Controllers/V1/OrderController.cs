@@ -21,14 +21,14 @@ namespace ECommerceAPI.Controllers.V1
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(Guid id)
         {
-            await _mediator.Send(new DeleteOrderCommand { Id = id });
+            await _mediator.Send(new OrderCommand.DeleteOrderCommand { Id = id });
             return NoContent();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderModel>> GetOrder(Guid id)
         {
-            var order = await _mediator.Send(new GetOrderByIdQuery { Id = id });
+            var order = await _mediator.Send(new OrderQuery.GetOrderByIdQuery { Id = id });
             if (order == null)
             {
                 return NotFound();
@@ -39,7 +39,7 @@ namespace ECommerceAPI.Controllers.V1
         [HttpGet]
         public async Task<ActionResult<List<OrderModel>>> GetOrders()
         {
-            var orders = await _mediator.Send(new GetOrdersQuery());
+            var orders = await _mediator.Send(new OrderQuery.GetOrdersQuery());
             return orders;
         }
 
@@ -50,7 +50,7 @@ namespace ECommerceAPI.Controllers.V1
             {
                 return BadRequest();
             }
-            var updatedOrder = await _mediator.Send(new UpdateOrderCommand { Order = order });
+            var updatedOrder = await _mediator.Send(new OrderCommand.UpdateOrderCommand { Order = order });
             return Ok(updatedOrder);
         }
     }
