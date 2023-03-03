@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using ApplicationException = ECommerce.Domain.Exceptions.ApplicationException;
 
-namespace ECommerce.Infrastructure.Middleware
+namespace ECommerceAPI.Middleware
 {
     internal sealed class ExceptionHandlingMiddleware : IMiddleware
     {

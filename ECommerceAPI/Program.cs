@@ -1,13 +1,10 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using ECommerceAPI.Autofac;
-using ECommerce.Application.Handlers;
 using ECommerce.Application.Validation;
-using ECommerce.Domain.Interface;
 using ECommerce.Infrastructure.Config;
 using ECommerce.Infrastructure.Data;
-using ECommerce.Infrastructure.Middleware;
-using ECommerce.Infrastructure.Repository;
+using ECommerceAPI.Autofac;
+using ECommerceAPI.Middleware;
 using ECommerceAPI.Options;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -21,10 +18,8 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<DataContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped);
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped);
 
-builder.Services.AddMediatR(typeof(Program));
-builder.Services.AddMediatR(typeof(AddUserCommandHandler).Assembly);
 
 builder.Services.AddControllers();
 
@@ -66,13 +61,11 @@ builder.Logging.AddSerilog(logger);
 
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

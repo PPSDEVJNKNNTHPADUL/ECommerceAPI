@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System.Data.SqlClient;
 
-namespace ECommerce.Infrastructure.Middleware
+namespace ECommerceAPI.Middleware
 {
     public class UserIdAuth
     {
