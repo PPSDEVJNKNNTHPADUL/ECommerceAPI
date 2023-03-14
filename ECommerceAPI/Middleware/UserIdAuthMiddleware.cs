@@ -15,8 +15,13 @@ namespace ECommerceAPI.Middleware
             _next = next;
         }
 
-        public async Task Invoke(HttpContext httpContext)
+        public async Task InvokeAsync(HttpContext httpContext)
         {
+            if (StringCompare(httpContext, "/api/v1/User"))
+            {
+                await _next(httpContext);
+                return;
+            }
             if (!httpContext.Request.Headers.ContainsKey("x-user-id"))
             {
                 httpContext.Response.StatusCode = 401;
@@ -54,7 +59,11 @@ namespace ECommerceAPI.Middleware
             {
                 return true;
             }
-
+        }
+        private static bool StringCompare(HttpContext context, string route)
+        {
+            var stringComparison = context.Request.Path.Equals(route, StringComparison.OrdinalIgnoreCase);
+            return stringComparison;
         }
     }
 

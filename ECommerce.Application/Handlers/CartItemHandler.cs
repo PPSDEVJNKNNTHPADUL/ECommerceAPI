@@ -52,19 +52,19 @@ namespace ECommerce.Application.Handlers
 
         public class GetAllCartItemQueryHandler : IRequestHandler<CartItemQuery.GetAllCartItemsQuery, List<CartItemModel>>
         {
-            private readonly ICartItemRepository _cartItemRepository;
+            private readonly ICartItemRepository _cartRepository;
 
-            public GetAllCartItemQueryHandler(ICartItemRepository cartItemRepository)
+            public GetAllCartItemQueryHandler(ICartItemRepository cartRepository)
             {
-                _cartItemRepository = cartItemRepository;
+                _cartRepository = cartRepository;
             }
 
             public async Task<List<CartItemModel>> Handle(CartItemQuery.GetAllCartItemsQuery request, CancellationToken cancellationToken)
             {
-                var result = await _cartItemRepository.GetAllCartItems();
-                return result;
+                return await _cartRepository.GetAllCartItems(request.ShopperId);
             }
         }
+
 
         public class UpdateCartItemCommandHandler : IRequestHandler<CartItemCommand.UpdateCartItemCommand, CartItemModel>
         {

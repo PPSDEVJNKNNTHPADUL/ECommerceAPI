@@ -16,6 +16,12 @@ namespace ECommerce.Application.Queries
         }
         public class GetOrdersQuery : IRequest<List<OrderModel>>
         {
+            public Guid UserId { get; }
+
+            public GetOrdersQuery(Guid userId)
+            {
+                UserId = userId;
+            }
         }
     }
 }

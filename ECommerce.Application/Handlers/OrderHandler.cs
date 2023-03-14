@@ -72,7 +72,7 @@ namespace ECommerce.Application.Handlers
 
             public async Task<List<OrderModel>> Handle(OrderQuery.GetOrdersQuery request, CancellationToken cancellationToken)
             {
-                return await _repository.GetOrders();
+                return await _repository.GetOrders(request.UserId);
             }
         }
     }

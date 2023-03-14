@@ -36,9 +36,9 @@ namespace ECommerce.Application.Validation
         {
             public UpdateCartItemCommandValidation()
             {
-                RuleFor(ci => ci.CartItemId)
+ /*               RuleFor(ci => ci.CartItemId)
                     .NotEmpty().WithMessage("Shopper Id is required")
-                    .NotNull().WithMessage("Shopper Id cannot be null");
+                    .NotNull().WithMessage("Shopper Id cannot be null");*/
 
                 RuleFor(ci => ci.ProductName)
                     .NotEmpty().WithMessage("Shopper Id is required")

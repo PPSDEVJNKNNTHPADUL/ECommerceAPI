@@ -10,6 +10,15 @@ namespace ECommerce.Application.Queries
 {
     public class CartItemQuery
     {
-        public record GetAllCartItemsQuery() : IRequest<List<CartItemModel>>;
+        public class GetAllCartItemsQuery : IRequest<List<CartItemModel>>
+        {
+            public Guid ShopperId { get; }
+
+            public GetAllCartItemsQuery(Guid shopperId)
+            {
+                ShopperId = shopperId;
+            }
+        }
+
     }
 }

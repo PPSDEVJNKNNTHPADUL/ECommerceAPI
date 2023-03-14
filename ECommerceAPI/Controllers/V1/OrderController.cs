@@ -39,8 +39,11 @@ namespace ECommerceAPI.Controllers.V1
         [HttpGet]
         public async Task<ActionResult<List<OrderModel>>> GetOrders()
         {
-            var orders = await _mediator.Send(new OrderQuery.GetOrdersQuery());
-            return orders;
+            var userId = Request.Headers["x-user-id"].FirstOrDefault();
+            var parsedUserId = Guid.Parse(userId!);
+            var query = new OrderQuery.GetOrdersQuery(parsedUserId);
+            var orders = await _mediator.Send(query);
+            return Ok(orders);
         }
 
         [HttpPut("{id}")]

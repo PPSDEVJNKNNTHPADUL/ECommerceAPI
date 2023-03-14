@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace ECommerce.Infrastructure.Config
+namespace ECommerceAPI.Config
 {
     public class AddHeaderAuthOperation : IOperationFilter
     {

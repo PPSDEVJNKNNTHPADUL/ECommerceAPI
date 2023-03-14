@@ -1,11 +1,10 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using ECommerce.Application.Validation;
-using ECommerce.Infrastructure.Config;
 using ECommerce.Infrastructure.Data;
 using ECommerceAPI.Autofac;
+using ECommerceAPI.Config;
 using ECommerceAPI.Middleware;
-using ECommerceAPI.Options;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -20,7 +19,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped);
 
-
 builder.Services.AddControllers();
 
 builder.Services.AddFluentValidationAutoValidation();
@@ -29,9 +27,8 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(builder => builder.RegisterModule(new MyModule()));
 
-builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 builder.Services.AddMediatR(typeof(Program).Assembly);
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
 
 builder.Services.AddApiVersioning(config =>
 {

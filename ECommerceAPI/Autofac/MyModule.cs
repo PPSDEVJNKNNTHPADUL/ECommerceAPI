@@ -5,6 +5,7 @@ using ECommerce.Application.Validation;
 using ECommerce.Domain.Interface;
 using ECommerce.Infrastructure.Data;
 using ECommerce.Infrastructure.Repository;
+using ECommerceAPI.Middleware;
 using FluentValidation;
 using MediatR;
 
@@ -102,7 +103,9 @@ namespace ECommerceAPI.Autofac
             builder.RegisterAssemblyTypes(typeof(OrderHandler.UpdateOrderCommandHandler).Assembly)
                 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 
+            builder.RegisterType<ExceptionHandlingMiddleware>().AsSelf();
 
+            builder.RegisterGeneric(typeof(ValidationBehavior<,>)).As(typeof(IPipelineBehavior<,>)).InstancePerDependency();
 
         }
     }

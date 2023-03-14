@@ -83,7 +83,7 @@ namespace ECommerce.Infrastructure.Repository
             }
         }
 
-        public async Task<List<CartItemModel>> GetAllCartItems()
+        public async Task<List<CartItemModel>> GetAllCartItems(Guid shopperId)
         {
             _logger.LogInformation("Get All Cart Items executing..");
             try
@@ -93,12 +93,14 @@ namespace ECommerce.Infrastructure.Repository
             FROM CartItems ci
             INNER JOIN Orders o 
             ON ci.OrderPrimaryId = o.OrderId
-            WHERE o.OrderStatus = @orderStatus";
+            WHERE o.OrderStatus = @orderStatus
+            AND ci.ShopperId = @shopperId";
 
                 var con = _dataContext.Database.GetDbConnection();
                 var cartItems = await con.QueryAsync<CartItemModel>(query, new
                 {
-                    orderStatus = 0
+                    orderStatus = 0,
+                    shopperId
                 });
 
                 return cartItems.ToList();

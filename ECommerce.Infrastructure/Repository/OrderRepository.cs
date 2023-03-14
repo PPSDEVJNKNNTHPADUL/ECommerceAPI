@@ -80,13 +80,13 @@ namespace ECommerce.Infrastructure.Repository
         }
 
 
-        public async Task<List<OrderModel>> GetOrders()
+        public async Task<List<OrderModel>> GetOrders(Guid userId)
         {
-            var query = "Select * From Orders";
+            var query = "SELECT o.* FROM Orders o WHERE UserPrimaryId = @UserId";
             try
             {
                 var con = _dataContext.Database.GetDbConnection();
-                var orders = await con.QueryAsync<OrderModel>(query);
+                var orders = await con.QueryAsync<OrderModel>(query, new { UserId = userId });
                 var orderIds = orders.Select(o => o.OrderId).ToArray();
                 var cartItems = await _dataContext.CartItems
                     .Where(ci => orderIds.Contains(ci.OrderPrimaryId)).ToListAsync();
@@ -106,6 +106,7 @@ namespace ECommerce.Infrastructure.Repository
             }
         }
 
+
         public async Task<OrderModel> UpdateOrder(OrderModel orders)
         {
             var order = await _dataContext.Orders.FindAsync(orders.OrderId) ?? new OrderEntity();
@@ -114,7 +115,7 @@ namespace ECommerce.Infrastructure.Repository
             return orders;
 
         }
-        private async Task<OrderEntity> FindIdOrder(Guid id) //added 4:55PM 1/24/2023
+        private async Task<OrderEntity> FindIdOrder(Guid id) 
         {
             var foundOrder = await _dataContext.Orders.FindAsync(id);
             if (foundOrder == null)

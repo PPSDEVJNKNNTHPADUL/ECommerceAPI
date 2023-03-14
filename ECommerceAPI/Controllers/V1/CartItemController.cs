@@ -23,7 +23,9 @@ namespace ECommerceAPI.Controllers.V1
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<CartItemModel>>> GetAllCartItems()
         {
-            var query = new CartItemQuery.GetAllCartItemsQuery();
+            var userId = Request.Headers["x-user-id"].FirstOrDefault();
+            var parsedUserId = Guid.Parse(userId!);
+            var query = new CartItemQuery.GetAllCartItemsQuery(parsedUserId);
             var result = await _mediator.Send(query);
 
             return Ok(result);
@@ -33,7 +35,9 @@ namespace ECommerceAPI.Controllers.V1
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<CartItemModel>> AddCartItem([FromBody] AddCartItemDTO addCartItemDto)
         {
-            var command = new CartItemCommand.AddCartItemCommand(addCartItemDto.ShopperId, addCartItemDto.ProductName);
+            var userId = Request.Headers["x-user-id"].FirstOrDefault();
+            var parsedUserId = Guid.Parse(userId!);
+            var command = new CartItemCommand.AddCartItemCommand(parsedUserId, addCartItemDto.ProductName);
             var result = await _mediator.Send(command);
 
             return CreatedAtAction(nameof(AddCartItem), new { cartItemId = result.CartItemId }, result);
@@ -42,8 +46,14 @@ namespace ECommerceAPI.Controllers.V1
         [HttpPut("{cartItemId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CartItemModel>> UpdateCartItem([FromBody] CartItemCommand.UpdateCartItemCommand command)
+        public async Task<ActionResult<CartItemModel>> UpdateCartItem([FromBody] UpdateCartItemDTO updateCartItemDto, [FromRoute] Guid cartItemId)
         {
+            var command = new CartItemCommand.UpdateCartItemCommand
+            {
+                CartItemId = cartItemId,
+                ProductName = updateCartItemDto.ProductName,
+            };
+
             var updatedCartItem = await _mediator.Send(command);
 
             if (updatedCartItem == null)
