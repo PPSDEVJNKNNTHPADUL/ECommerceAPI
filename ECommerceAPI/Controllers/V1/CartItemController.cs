@@ -46,14 +46,8 @@ namespace ECommerceAPI.Controllers.V1
         [HttpPut("{cartItemId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CartItemModel>> UpdateCartItem([FromBody] UpdateCartItemDTO updateCartItemDto, [FromRoute] Guid cartItemId)
+        public async Task<ActionResult<CartItemModel>> UpdateCartItem([FromBody] CartItemCommand.UpdateCartItemCommand command)
         {
-            var command = new CartItemCommand.UpdateCartItemCommand
-            {
-                CartItemId = cartItemId,
-                ProductName = updateCartItemDto.ProductName,
-            };
-
             var updatedCartItem = await _mediator.Send(command);
 
             if (updatedCartItem == null)
