@@ -1,6 +1,5 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using ECommerce.Application.Validation;
 using ECommerce.Infrastructure.Data;
 using ECommerceAPI.Autofac;
 using ECommerceAPI.Config;

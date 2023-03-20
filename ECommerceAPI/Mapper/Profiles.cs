@@ -16,12 +16,13 @@ namespace ECommerceAPI.Mapper
             CreateMap<UserModel, UserEntity>().ReverseMap();
             CreateMap<AddUserDTO, UserCommand.AddUserCommand>().ReverseMap();
             CreateMap<UserCommand.AddUserCommand, UserModel>().ReverseMap();
+            CreateMap<UserCommand.AddUserCommand, UserEntity>().ReverseMap();
 
             //CartItem
             CreateMap<CartItemModel, CartItemEntity>().ReverseMap();
             CreateMap<AddCartItemDTO, CartItemEntity>().ReverseMap();
             CreateMap<CartItemModel, CartItemDTO>().ReverseMap();
-            CreateMap<CartItemCommand.UpdateCartItemCommand, CartItemModel>().ReverseMap();
+            CreateMap<CartItemCommand.UpdateCartItemCommand, CartItemEntity>().ReverseMap();
             CreateMap<UpdateCartItemDTO, CartItemEntity>().ReverseMap();
 
 

@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using Dapper;
+﻿using Dapper;
 using ECommerce.Domain.Entities;
 using ECommerce.Domain.Interface;
-using ECommerce.Domain.Models;
 using ECommerce.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -12,28 +10,24 @@ namespace ECommerce.Infrastructure.Repository
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _dataContext;
-        private readonly IMapper _mapper;
         private readonly ILogger<UserRepository> _logger;
 
-        public UserRepository(DataContext dataContext, IMapper mapper, ILogger<UserRepository> logger)
+        public UserRepository(DataContext dataContext, ILogger<UserRepository> logger)
         {
             _dataContext = dataContext;
-            _mapper = mapper;
             _logger = logger;
         }
-        public async Task<UserModel> AddUser(UserModel userName)
+
+        public async Task<UserEntity> AddUser(UserEntity userEntity)
         {
             _logger.LogInformation("Create User in Database");
             try
             {
-                var userMapper = _mapper.Map<UserEntity>(userName);
-                _dataContext.Users.Add(userMapper);
+                _dataContext.Users.Add(userEntity);
                 await _dataContext.SaveChangesAsync();
 
-                var createdUser = _mapper.Map<UserModel>(userMapper);
-
-                _logger.LogInformation("Successfully added User: {@createdUser}", createdUser);
-                return createdUser;
+                _logger.LogInformation("Successfully added User: {@userEntity}", userEntity);
+                return userEntity;
             }
             catch (Exception ex)
             {
@@ -42,8 +36,7 @@ namespace ECommerce.Infrastructure.Repository
             }
         }
 
-
-        public async Task<UserModel> GetUserModelById(Guid userId)
+        public async Task<UserEntity> GetUserById(Guid userId)
         {
             _logger.LogInformation("Retrieve User By Id");
             try
@@ -52,9 +45,9 @@ namespace ECommerce.Infrastructure.Repository
                     "FROM Users " +
                     "WHERE UserId = @UserId";
                 using var con = _dataContext.Database.GetDbConnection();
-                var getUser = await con.QuerySingleOrDefaultAsync<UserModel>(query, new { userId });
-                return getUser;
+                var getUser = await con.QuerySingleOrDefaultAsync<UserEntity>(query, new { userId });
 
+                return getUser;
             }
             catch (Exception ex)
             {

@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ECommerceAPI.Migrations
+namespace ECommerce.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ECommerceMigration : Migration
+    public partial class initialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

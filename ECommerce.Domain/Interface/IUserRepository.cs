@@ -1,10 +1,15 @@
-﻿using ECommerce.Domain.Models;
+﻿using ECommerce.Domain.Entities;
+using ECommerce.Domain.Models;
 
 namespace ECommerce.Domain.Interface
 {
+
     public interface IUserRepository
     {
-        Task<UserModel> AddUser(UserModel userName);
-        Task<UserModel> GetUserModelById(Guid userId);
+
+        Task<UserEntity> AddUser(UserEntity userName);
+
+        Task<UserEntity> GetUserById(Guid userId);
+
     }
 }

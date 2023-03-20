@@ -30,13 +30,16 @@ namespace ECommerceAPI.Controllers.V1
             return CreatedAtAction(nameof(GetUserById), new { userId = user.UserId }, user);
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetUserById(Guid userId)
+        public async Task<IActionResult> GetUserById()
         {
+            var userId = Request.Headers["x-user-id"].FirstOrDefault();
+            var parsedUserId = Guid.Parse(userId!);
+
             var query = new UserQuery.GetUserByIdQuery
             {
-                UserId = userId
+                UserId = parsedUserId
             };
             var user = await _mediator.Send(query);
             if (user == null)

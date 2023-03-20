@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ECommerceAPI.Migrations
+namespace ECommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230227031631_ECommerceMigration")]
-    partial class ECommerceMigration
+    [Migration("20230320030410_initialMigration")]
+    partial class initialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace ECommerceAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ECommerceAPI.Entities.CartItemEntity", b =>
+            modelBuilder.Entity("ECommerce.Domain.Entities.CartItemEntity", b =>
                 {
                     b.Property<Guid>("CartItemId")
                         .ValueGeneratedOnAdd()
@@ -47,7 +47,7 @@ namespace ECommerceAPI.Migrations
                     b.ToTable("CartItems");
                 });
 
-            modelBuilder.Entity("ECommerceAPI.Entities.CheckoutEntity", b =>
+            modelBuilder.Entity("ECommerce.Domain.Entities.CheckoutEntity", b =>
                 {
                     b.Property<Guid>("CheckoutId")
                         .ValueGeneratedOnAdd()
@@ -66,7 +66,7 @@ namespace ECommerceAPI.Migrations
                     b.ToTable("Checkouts");
                 });
 
-            modelBuilder.Entity("ECommerceAPI.Entities.OrderEntity", b =>
+            modelBuilder.Entity("ECommerce.Domain.Entities.OrderEntity", b =>
                 {
                     b.Property<Guid>("OrderId")
                         .ValueGeneratedOnAdd()
@@ -85,7 +85,7 @@ namespace ECommerceAPI.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("ECommerceAPI.Entities.UserEntity", b =>
+            modelBuilder.Entity("ECommerce.Domain.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
@@ -99,9 +99,9 @@ namespace ECommerceAPI.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ECommerceAPI.Entities.CartItemEntity", b =>
+            modelBuilder.Entity("ECommerce.Domain.Entities.CartItemEntity", b =>
                 {
-                    b.HasOne("ECommerceAPI.Entities.OrderEntity", "OrderEntity")
+                    b.HasOne("ECommerce.Domain.Entities.OrderEntity", "OrderEntity")
                         .WithMany("CartItems")
                         .HasForeignKey("OrderPrimaryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -110,9 +110,9 @@ namespace ECommerceAPI.Migrations
                     b.Navigation("OrderEntity");
                 });
 
-            modelBuilder.Entity("ECommerceAPI.Entities.CheckoutEntity", b =>
+            modelBuilder.Entity("ECommerce.Domain.Entities.CheckoutEntity", b =>
                 {
-                    b.HasOne("ECommerceAPI.Entities.OrderEntity", "OrderEntity")
+                    b.HasOne("ECommerce.Domain.Entities.OrderEntity", "OrderEntity")
                         .WithMany()
                         .HasForeignKey("OrderPrimaryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -121,9 +121,9 @@ namespace ECommerceAPI.Migrations
                     b.Navigation("OrderEntity");
                 });
 
-            modelBuilder.Entity("ECommerceAPI.Entities.OrderEntity", b =>
+            modelBuilder.Entity("ECommerce.Domain.Entities.OrderEntity", b =>
                 {
-                    b.HasOne("ECommerceAPI.Entities.UserEntity", "UserEntity")
+                    b.HasOne("ECommerce.Domain.Entities.UserEntity", "UserEntity")
                         .WithMany("Orders")
                         .HasForeignKey("UserPrimaryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -132,12 +132,12 @@ namespace ECommerceAPI.Migrations
                     b.Navigation("UserEntity");
                 });
 
-            modelBuilder.Entity("ECommerceAPI.Entities.OrderEntity", b =>
+            modelBuilder.Entity("ECommerce.Domain.Entities.OrderEntity", b =>
                 {
                     b.Navigation("CartItems");
                 });
 
-            modelBuilder.Entity("ECommerceAPI.Entities.UserEntity", b =>
+            modelBuilder.Entity("ECommerce.Domain.Entities.UserEntity", b =>
                 {
                     b.Navigation("Orders");
                 });

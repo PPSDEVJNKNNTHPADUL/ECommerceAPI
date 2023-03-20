@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Dapper;
+﻿using Dapper;
 using ECommerce.Domain.Entities;
 using ECommerce.Domain.Interface;
 using ECommerce.Domain.Models;
@@ -115,12 +114,9 @@ namespace ECommerce.Infrastructure.Repository
             return orders;
 
         }
-        private async Task<OrderEntity> FindIdOrder(Guid id) 
+        private async Task<OrderEntity> FindIdOrder(Guid id)
         {
-            var foundOrder = await _dataContext.Orders.FindAsync(id);
-            if (foundOrder == null)
-                throw new NullReferenceException();
-
+            var foundOrder = await _dataContext.Orders.FindAsync(id)??throw new NullReferenceException();
             return foundOrder;
 
         }

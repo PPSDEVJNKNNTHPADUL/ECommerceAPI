@@ -10,6 +10,7 @@ namespace ECommerce.Application.Handlers
 {
     public class CartItemHandler
     {
+
         public class AddCartItemCommandHandler : IRequestHandler<CartItemCommand.AddCartItemCommand, CartItemModel>
         {
             private readonly ICartItemRepository _cartItemRepository;
@@ -23,17 +24,20 @@ namespace ECommerce.Application.Handlers
 
             public async Task<CartItemModel> Handle(CartItemCommand.AddCartItemCommand request, CancellationToken cancellationToken)
             {
-                var newCartItem = _mapper.Map<CartItemModel>(new CartItemEntity
+                var newCartItemEntity = new CartItemEntity
                 {
                     ShopperId = request.ShopperId,
                     ProductName = request.ProductName
-                });
+                };
 
-                var result = await _cartItemRepository.AddCartItem(newCartItem);
-                return result;
+                var result = await _cartItemRepository.AddCartItem(newCartItemEntity);
+
+                return _mapper.Map<CartItemModel>(result);
             }
         }
 
+
+        // DeleteCartItemCommandHandler removes a specific cart item from the cart
         public class DeleteCartItemCommandHandler : IRequestHandler<CartItemCommand.DeleteCartItemCommand>
         {
             private readonly ICartItemRepository _cartItemRepository;
@@ -50,6 +54,7 @@ namespace ECommerce.Application.Handlers
             }
         }
 
+        // GetAllCartItemQueryHandler gets all cart items for a specific shopper
         public class GetAllCartItemQueryHandler : IRequestHandler<CartItemQuery.GetAllCartItemsQuery, List<CartItemModel>>
         {
             private readonly ICartItemRepository _cartRepository;
@@ -65,7 +70,7 @@ namespace ECommerce.Application.Handlers
             }
         }
 
-
+        // UpdateCartItemCommandHandler updates a specific cart item in the cart
         public class UpdateCartItemCommandHandler : IRequestHandler<CartItemCommand.UpdateCartItemCommand, CartItemModel>
         {
             private readonly ICartItemRepository _repository;
@@ -79,11 +84,11 @@ namespace ECommerce.Application.Handlers
 
             public async Task<CartItemModel> Handle(CartItemCommand.UpdateCartItemCommand request, CancellationToken cancellationToken)
             {
-                var cartItem = _mapper.Map<CartItemModel>(request);
+                var cartItemEntity = _mapper.Map<CartItemEntity>(request);
 
-                var updatedCartItem = await _repository.UpdateCartItem(cartItem);
+                var updatedCartItemEntity = await _repository.UpdateCartItem(cartItemEntity);
 
-                return updatedCartItem;
+                return _mapper.Map<CartItemModel>(updatedCartItemEntity);
             }
         }
     }

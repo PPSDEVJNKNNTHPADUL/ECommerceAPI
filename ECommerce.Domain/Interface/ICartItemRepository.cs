@@ -1,12 +1,19 @@
-﻿using ECommerce.Domain.Models;
+﻿using ECommerce.Domain.Entities;
+using ECommerce.Domain.Models;
 
 namespace ECommerce.Domain.Interface
 {
+    
     public interface ICartItemRepository
     {
-        Task<CartItemModel> AddCartItem(CartItemModel newCartItem);
+        
+        Task<CartItemEntity> AddCartItem(CartItemEntity newCartItem);
+        
         Task<List<CartItemModel>> GetAllCartItems(Guid shopperId);
-        Task<CartItemModel> UpdateCartItem(CartItemModel cartItem);
+        
+        Task<CartItemEntity> UpdateCartItem(CartItemEntity cartItem);
+        
         Task DeleteCartItem(Guid CartItemId);
+        
     }
 }

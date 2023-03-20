@@ -48,7 +48,7 @@ namespace ECommerceAPI.Middleware
         private static bool IsValidUserId(Guid userId)
         {
             var query = "Select * From Users Where UserId = @userId";
-            string conString = "server=(localdb)\\MSSQLLocalDB;database=ecommercedb;trusted_connection=true;encrypt=false";
+            string conString = "server=(localdb)\\MSSQLLocalDB;database=testdb;trusted_connection=true;encrypt=false";
             using var connection = new SqlConnection(conString);
             var user = connection.QueryAsync<UserEntity>(query, new { userId }).Result.FirstOrDefault();
             if (user == null)

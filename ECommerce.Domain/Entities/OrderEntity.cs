@@ -8,12 +8,19 @@ namespace ECommerce.Domain.Entities
     {
         [Key]
         public Guid OrderId { get; set; }
+       
 
         [ForeignKey(nameof(UserEntity))]
         public Guid UserPrimaryId { get; set; }
+       
+
         public UserEntity? UserEntity { get; set; }
+       
 
         public OrderStatus OrderStatus { get; set; }
-        public ICollection<CartItemEntity>CartItems { get; set; } = new List<CartItemEntity>();
+        
+
+        public ICollection<CartItemEntity> CartItems { get; set; } = new List<CartItemEntity>();
+        
     }
 }

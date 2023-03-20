@@ -5,14 +5,20 @@ namespace ECommerce.Domain.Entities
 {
     public class CartItemEntity
     {
+       
         [Key]
         public Guid CartItemId { get; set; }
+
+       
         public string? ProductName { get; set; }
+
+        
         public Guid ShopperId { get; set; }
 
+      
         [ForeignKey(nameof(OrderEntity))]
-        public Guid OrderPrimaryId { get; set;}
-        public virtual OrderEntity? OrderEntity { get; set; }
+        public Guid OrderPrimaryId { get; set; }
+        public OrderEntity? OrderEntity { get; set; }
 
     }
 }

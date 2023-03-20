@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Dapper;
+﻿using Dapper;
 using ECommerce.Domain.Entities;
 using ECommerce.Domain.Interface;
 using ECommerce.Domain.Models;
@@ -12,17 +11,15 @@ namespace ECommerce.Infrastructure.Repository
     public class CartItemRepository : ICartItemRepository
     {
         private readonly DataContext _dataContext;
-        private readonly IMapper _mapper;
         private readonly ILogger<CartItemRepository> _logger;
 
-        public CartItemRepository(DataContext dataContext, IMapper mapper, ILogger<CartItemRepository> logger)
+        public CartItemRepository(DataContext dataContext, ILogger<CartItemRepository> logger)
         {
             _dataContext = dataContext;
-            _mapper = mapper;
             _logger = logger;
         }
 
-        public async Task<CartItemModel> AddCartItem(CartItemModel newCartItem)
+        public async Task<CartItemEntity> AddCartItem(CartItemEntity newCartItem)
         {
             try
             {
@@ -30,12 +27,11 @@ namespace ECommerce.Infrastructure.Repository
 
                 var shopper = await _dataContext.Users.SingleOrDefaultAsync(u => u.UserId == newCartItem.ShopperId);
                 var shopperOrder = await _dataContext.Orders.SingleOrDefaultAsync(u => u.UserPrimaryId == newCartItem.ShopperId && u.OrderStatus == 0);
-                var cartItemEntity = _mapper.Map<CartItemEntity>(newCartItem);
 
                 if (shopperOrder != null)
                 {
-                    cartItemEntity.OrderPrimaryId = shopperOrder.OrderId;
-                    shopperOrder.CartItems.Add(cartItemEntity);
+                    newCartItem.OrderPrimaryId = shopperOrder.OrderId;
+                    shopperOrder.CartItems.Add(newCartItem);
                     _dataContext.Orders.Update(shopperOrder);
                 }
                 else
@@ -46,15 +42,15 @@ namespace ECommerce.Infrastructure.Repository
                         UserPrimaryId = shopper.UserId,
                         OrderStatus = 0,
                         CartItems = new List<CartItemEntity>() {
-                  cartItemEntity
-                }
+                            newCartItem
+                        }
                     };
                     _dataContext.Orders.Add(orderEntity);
                 }
 
                 await _dataContext.SaveChangesAsync();
 
-                return _mapper.Map<CartItemModel>(cartItemEntity);
+                return newCartItem;
             }
             catch (Exception ex)
             {
@@ -78,7 +74,7 @@ namespace ECommerce.Infrastructure.Repository
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error in deleting cart item details: {ex}",ex);
+                _logger.LogError("Error in deleting cart item details: {ex}", ex);
                 throw;
             }
         }
@@ -112,22 +108,16 @@ namespace ECommerce.Infrastructure.Repository
             }
         }
 
-        public async Task<CartItemModel> UpdateCartItem(CartItemModel cartItem)
+        public async Task<CartItemEntity> UpdateCartItem(CartItemEntity cartItem)
         {
             try
             {
-                var existingCartItem = await _dataContext.CartItems.FirstOrDefaultAsync(ci => ci.CartItemId == cartItem.CartItemId);
-
-                if (existingCartItem == null)
-                {
-                    throw new Exception($"Cart item with ID {cartItem.CartItemId} not found");
-                }
+                var existingCartItem = await _dataContext.CartItems.FirstOrDefaultAsync(ci => ci.CartItemId == cartItem.CartItemId)??throw new Exception($"Cart item with ID {cartItem.CartItemId} not found");
                 existingCartItem.ProductName = cartItem.ProductName;
 
                 await _dataContext.SaveChangesAsync();
 
-                var updatedCartItem = _mapper.Map<CartItemModel>(existingCartItem);
-                return updatedCartItem;
+                return existingCartItem;
             }
             catch (Exception ex)
             {
